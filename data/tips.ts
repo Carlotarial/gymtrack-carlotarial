@@ -20,7 +20,7 @@ export const ALL_TIPS: Tip[] = [
   },
   {
     id: 't3',
-    title: 'Consejo pro',
+    title: 'Consejo',
     text: 'Dormir 7-8 horas es tan importante como el propio entrenamiento.',
     icon: 'moon-outline',
   },
