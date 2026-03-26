@@ -47,7 +47,6 @@ export default function HomeScreen() {
 
   const handleAddWater = () => {
     waterScale.value = withSequence(withTiming(0.95), withSpring(1));
-    // 🌟 Restaurado: Mostrar tooltip si es la primera vez que bebe
     if (user.waterIntake === 0) {
       setShowWaterTooltip(true);
       setTimeout(() => setShowWaterTooltip(false), 3000);
@@ -67,7 +66,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
-      {/* Cabecera */}
       <View style={s.header}>
         <View style={{ flex: 1 }}>
           <View style={s.overlineContainer}>
@@ -92,7 +90,6 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Métricas Rápidas */}
       <View style={s.metricsRow}>
         <View style={staticStyles.metricItem}>
           <Ionicons name="flame-outline" size={28} color="#FF4B4B" />
@@ -107,7 +104,6 @@ export default function HomeScreen() {
         </View>
         <View style={s.metricDivider} />
         
-        {/* Sección de Agua con Tooltip Restaurado */}
         <View style={{ flex: 1, alignItems: 'center' }}>
           {showWaterTooltip && (
             <Animated.View entering={FadeInDown} exiting={FadeOut} style={s.waterTooltip}>
@@ -128,7 +124,6 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Sección Progreso Semanal */}
       <View style={staticStyles.section}>
         <Text style={s.sectionTitle}>Progreso semanal</Text>
         <View style={s.card}>
@@ -145,7 +140,6 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Siguiente sesión */}
       <View style={staticStyles.section}>
         <Text style={s.sectionTitle}>Siguiente sesión</Text>
         <View style={staticStyles.grid}>
@@ -159,7 +153,6 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Tip del día */}
       <View style={s.tipCard}>
         <View style={s.tipIconBox}><Ionicons name="bulb-outline" size={24} color={colors.gold} /></View>
         <View style={staticStyles.tipContent}>
@@ -170,7 +163,6 @@ export default function HomeScreen() {
 
       <View style={{ height: 100 }} />
 
-      {/* MODAL: SELECTOR DE PERFILES */}
       <Modal visible={showProfileSelector} transparent animationType="fade">
         <View style={s.modalOverlay}>
           <Animated.View entering={ZoomIn} style={s.profileModal}>
@@ -206,7 +198,6 @@ export default function HomeScreen() {
         </View>
       </Modal>
 
-      {/* MODAL: NOTIFICACIONES */}
       <Modal visible={showNotifications} transparent animationType="fade">
         <View style={s.modalOverlay}>
           <Animated.View entering={ZoomIn.duration(400)} style={s.notifModal}>

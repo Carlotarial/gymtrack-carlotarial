@@ -113,7 +113,6 @@ export default function SettingsScreen() {
           <Text style={s.subtitle}>Gestiona tus preferencias y datos físicos</Text>
         </View>
 
-        {/* Tarjeta de Perfil Corregida (Sin recorte en el badge) */}
         <View style={s.profileCard}>
           <TouchableOpacity 
             style={s.avatarContainer} 
@@ -142,7 +141,6 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* SECCIÓN: PREFERENCIAS */}
         <View style={staticStyles.section}>
           <Text style={s.sectionTitle}>Preferencias</Text>
           <TouchableOpacity style={s.settingItem} onPress={handleThemeToggle}>
@@ -238,7 +236,6 @@ export default function SettingsScreen() {
           )}
         </View>
 
-        {/* SECCIÓN: GENERAL */}
         <View style={staticStyles.section}>
           <Text style={s.sectionTitle}>General</Text>
           <TouchableOpacity style={s.settingItem} onPress={() => setShowRating(true)}>
@@ -258,7 +255,6 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ACCIONES FINALES */}
         <View style={s.footerActions}>
           <TouchableOpacity style={s.logoutBtn} onPress={handleLogout}>
             <Ionicons name="log-out-outline" size={22} color={colors.gold} />
@@ -271,7 +267,6 @@ export default function SettingsScreen() {
         </View>
       </ScrollView>
 
-      {/* MODAL VALORACIÓN */}
       <Modal visible={showRating} transparent animationType="fade">
         <View style={staticStyles.modalOverlay}>
           <Animated.View entering={ZoomIn} style={s.modalContent}>
@@ -292,7 +287,6 @@ export default function SettingsScreen() {
         </View>
       </Modal>
 
-      {/* MODAL SOPORTE */}
       <Modal visible={showSupport} transparent animationType="fade">
         <View style={staticStyles.modalOverlay}>
           <Animated.View entering={ZoomIn} style={s.modalContentWide}>
@@ -323,7 +317,6 @@ export default function SettingsScreen() {
         </View>
       </Modal>
 
-      {/* MODAL CONFIRMACIÓN ELIMINACIÓN */}
       <Modal visible={showDeleteConfirm} transparent animationType="fade">
         <View style={staticStyles.modalOverlay}>
           <Animated.View entering={ZoomIn} style={s.modalContent}>
@@ -340,7 +333,6 @@ export default function SettingsScreen() {
         </View>
       </Modal>
 
-      {/* MODAL AVATAR */}
       <Modal visible={showAvatarModal} transparent animationType="fade">
         <View style={staticStyles.modalOverlay}>
           <Animated.View entering={SlideInDown} style={s.avatarModalContent}>
@@ -397,7 +389,6 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
     shadowRadius: 30
   },
   
-  // 🌟 CONTENEDOR AVATAR FIX (Para que el badge no se corte)
   avatarContainer: { position: 'relative', marginRight: 20, width: 74, height: 74 },
   avatarImageWrapper: { width: 74, height: 74, borderRadius: 37, backgroundColor: c.accentLight, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
   avatarImage: { width: '100%', height: '100%' },

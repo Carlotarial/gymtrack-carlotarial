@@ -15,7 +15,6 @@ export default function ReportScreen() {
   
   const [chartMode, setChartMode] = useState<ChartMode>('kcal');
 
-  // 🌟 CALCULAMOS LOS MINUTOS SEMANALES AQUÍ PARA EVITAR EL ERROR DEL HOOK
   const weeklyMinutesData = useMemo(() => {
     const mins = [0, 0, 0, 0, 0, 0, 0];
     const now = new Date();
@@ -40,7 +39,6 @@ export default function ReportScreen() {
     user.workoutHistory.reduce((acc, s) => acc + s.durationSecs, 0) / 60
   );
 
-  // 🌟 DATOS PARA LA GRÁFICA
   const currentData = chartMode === 'kcal' ? weeklyKcalData.dailyKcal : weeklyMinutesData.daily;
   const maxValue = Math.max(...currentData, 1);
   const totalValue = chartMode === 'kcal' ? weeklyKcalData.totalKcal : weeklyMinutesData.total;
@@ -50,7 +48,6 @@ export default function ReportScreen() {
 
   return (
     <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
-      {/* HEADER EDITORIAL */}
       <Animated.View entering={FadeInDown.duration(600).easing(Easing.out(Easing.exp))} style={s.header}>
         <View style={s.overlineContainer}>
           <View style={s.overlineDot} />
@@ -64,7 +61,6 @@ export default function ReportScreen() {
         <Text style={s.subtitle}>Todo esfuerzo tiene su recompensa</Text>
       </Animated.View>
 
-      {/* Stats Grid */}
       <View style={staticStyles.statsGrid}>
         <View style={s.statCard}>
           <Text style={s.statLabel}>Calorías</Text>
@@ -92,7 +88,6 @@ export default function ReportScreen() {
         </View>
       </View>
 
-      {/* Gráfica con Selector */}
       <View style={staticStyles.section}>
         <View style={s.chartHeaderRow}>
             <Text style={s.sectionTitle}>Análisis Semanal</Text>
@@ -152,7 +147,6 @@ export default function ReportScreen() {
         </View>
       </View>
 
-      {/* Historial Reciente */}
       <View style={staticStyles.section}>
         <Text style={s.sectionTitle}>Historial Reciente</Text>
         {user.workoutHistory.length > 0 ? (

@@ -14,14 +14,12 @@ export default function DiscoverScreen() {
   const router = useRouter();
   const { colors } = useTheme();
   
-  // Estados de los datos
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState('Todos');
   const [mode, setMode] = useState<'workouts' | 'library'>('workouts');
   const [selectedExercise, setSelectedExercise] = useState<any>(null);
   const [selectedMuscle, setSelectedMuscle] = useState('Todos');
 
-  // Estados para mostrar/ocultar paneles
   const [showSearch, setShowSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -36,7 +34,6 @@ export default function DiscoverScreen() {
 
   return (
     <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
-      {/* CABECERA */}
       <Animated.View entering={FadeInDown.duration(400)} style={s.header}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start'}}>
           <View style={{ flex: 1, paddingRight: 16 }}>
@@ -71,7 +68,6 @@ export default function DiscoverScreen() {
         </View>
       </Animated.View>
 
-      {/* BARRA DE HERRAMIENTAS */}
       <Animated.View entering={FadeInDown.delay(50)} style={s.toolbar}>
         <Pressable 
           style={[s.toolbarBtn, (showSearch || search.length > 0) && s.toolbarBtnActive]} 
@@ -90,7 +86,6 @@ export default function DiscoverScreen() {
         </Pressable>
       </Animated.View>
 
-      {/* PANEL DE BÚSQUEDA */}
       {showSearch && (
         <Animated.View entering={FadeInDown.duration(300)} exiting={FadeOutUp.duration(200)} style={{ marginBottom: 24 }}>
           <View style={s.searchContainer}>
@@ -115,7 +110,6 @@ export default function DiscoverScreen() {
         </Animated.View>
       )}
 
-      {/* PANEL DE FILTROS (Rutinas) */}
       {showFilters && mode === 'workouts' && (
         <Animated.View entering={FadeInDown.duration(300)} exiting={FadeOutUp.duration(200)} style={{ marginBottom: 32 }}>
           <Text style={s.sectionTitle}>Etiquetas</Text>
@@ -152,7 +146,6 @@ export default function DiscoverScreen() {
         </Animated.View>
       )}
 
-      {/* PANEL DE FILTROS (Biblioteca) */}
       {showFilters && mode === 'library' && (
         <Animated.View entering={FadeInDown.duration(300)} exiting={FadeOutUp.duration(200)} style={{ marginBottom: 32 }}>
           <Text style={s.sectionTitle}>Músculo</Text>
@@ -175,10 +168,8 @@ export default function DiscoverScreen() {
         </Animated.View>
       )}
 
-      {/* CONTENIDO PRINCIPAL */}
       {mode === 'workouts' ? (
         <>
-          {/* Destacado del Día (Hero) */}
           {search.length === 0 && activeTag === 'Todos' && (
             <Animated.View entering={FadeInDown.delay(250)} style={staticStyles.section}>
               <Text style={s.sectionTitle}>Destacado del Día</Text>
@@ -201,7 +192,6 @@ export default function DiscoverScreen() {
             </Animated.View>
           )}
 
-          {/* Lista de Resultados de Rutinas */}
           <Animated.View entering={FadeInDown.delay(300)} style={staticStyles.section}>
             <Text style={s.sectionTitle}>Entrenamientos para ti</Text>
             {filteredWorkouts.length > 0 ? (
@@ -236,7 +226,6 @@ export default function DiscoverScreen() {
           </Animated.View>
         </>
       ) : (
-        /* BIBLIOTECA DE EJERCICIOS */
         <>
           <Animated.View entering={FadeInDown.delay(200)} style={staticStyles.section}>
             <Text style={s.sectionTitle}>Biblioteca Técnica</Text>
@@ -266,7 +255,6 @@ export default function DiscoverScreen() {
         </>
       )}
 
-      {/* Modal de Detalle de Ejercicio */}
       <Modal 
         visible={!!selectedExercise} 
         transparent 
