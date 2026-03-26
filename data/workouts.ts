@@ -30,7 +30,6 @@ export const ALL_WORKOUTS: Workout[] = [
 export function getRecommendedWorkouts(goal: string, activityLevel?: string): Workout[] {
   let baseWorkouts = [...ALL_WORKOUTS];
   
-  // 1. Filtrar por objetivo primario
   if (goal === 'perder_peso') {
     baseWorkouts = ALL_WORKOUTS.filter(w => ['HIIT', 'Cardio'].includes(w.tag));
   } else if (goal === 'ganar_musculo') {
@@ -39,21 +38,17 @@ export function getRecommendedWorkouts(goal: string, activityLevel?: string): Wo
     baseWorkouts = ALL_WORKOUTS.filter(w => ['Core', 'Fuerza', 'Yoga'].includes(w.tag));
   }
 
-  // 2. Ajustar por nivel de actividad (Intensidad)
   if (activityLevel) {
     const level = activityLevel.toLowerCase();
     if (level === 'sedentario') {
-      // Principiante: Evitar intensidad Alta si es posible
       const easy = baseWorkouts.filter(w => w.intensity !== 'Alta');
       if (easy.length >= 2) baseWorkouts = easy;
     } else if (level === 'activo') {
-      // Avanzado: Priorizar intensidad Alta
       const hard = baseWorkouts.filter(w => w.intensity === 'Alta');
       if (hard.length >= 2) baseWorkouts = hard;
     }
   }
 
-  // Retornar al menos 2, mezclando si es necesario
   if (baseWorkouts.length < 2) {
     return [...baseWorkouts, ...ALL_WORKOUTS].slice(0, 2);
   }

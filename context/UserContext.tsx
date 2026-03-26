@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Estructura de cada sesión completada
 export interface WorkoutSession {
   id: string;
   title: string;
@@ -93,7 +92,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     loadData();
   }, []);
 
-  // 🛡️ HELPERS BLINDADOS: Nunca devuelven undefined
   const user = appState.status === 'ready' ? appState.user : DEFAULT_USER;
   const allUsers = appState.status === 'ready' ? appState.allUsers : [];
   const isLoading = appState.status === 'loading';
@@ -182,7 +180,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     await AsyncStorage.clear();
   };
 
-  // 🛡️ CORRECCIÓN CRÍTICA: Añadido optional chaining para evitar el error de length
   const isOnboarded = !!user?.name && user.name.length > 0;
 
   return (

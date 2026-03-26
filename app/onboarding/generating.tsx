@@ -41,7 +41,6 @@ export default function GeneratingScreen() {
   const pulse = useSharedValue(1);
 
   useEffect(() => {
-    // Animación de pulso del icono
     pulse.value = withRepeat(
       withSequence(
         withTiming(1.1, { duration: 1000 }),
@@ -51,7 +50,6 @@ export default function GeneratingScreen() {
       true
     );
 
-    // Ciclo de mensajes de carga
     const interval = setInterval(() => {
       setStepIndex((prev) => {
         if (prev < MESSAGES.length - 1) {
@@ -63,14 +61,12 @@ export default function GeneratingScreen() {
       });
     }, 2000);
 
-    // Ciclo de tips
     let tipIndex = 0;
     const tipInterval = setInterval(() => {
       tipIndex = (tipIndex + 1) % FITNESS_TIPS.length;
       setCurrentTip(FITNESS_TIPS[tipIndex]);
     }, 4000);
 
-    // Navegación final
     const timer = setTimeout(() => {
       router.replace('/(tabs)' as any);
     }, 8500);
@@ -94,12 +90,10 @@ export default function GeneratingScreen() {
 
   return (
     <View style={s.container}>
-      {/* Blobs de fondo para coherencia con el inicio */}
       <View style={s.blob1} />
       <View style={s.blob2} />
 
       <View style={staticStyles.content}>
-        {/* Icono Dinámico */}
         <Animated.View style={[s.iconBox, pulseStyle]}>
           <Animated.View 
             key={MESSAGES[stepIndex].icon} 
@@ -156,7 +150,6 @@ const staticStyles = StyleSheet.create({
 const dynamicStyles = (c: AppColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: c.background, overflow: 'hidden' },
 
-  // Blobs para match visual con NameScreen
   blob1: { position: 'absolute', width: SCREEN_WIDTH * 0.8, height: SCREEN_WIDTH * 0.8, borderRadius: SCREEN_WIDTH * 0.4, backgroundColor: c.accentLight, top: -100, right: -100, opacity: 0.4 },
   blob2: { position: 'absolute', width: SCREEN_WIDTH * 0.6, height: SCREEN_WIDTH * 0.6, borderRadius: SCREEN_WIDTH * 0.3, backgroundColor: c.goldLight, bottom: -50, left: -100, opacity: 0.3 },
 

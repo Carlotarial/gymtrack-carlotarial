@@ -92,7 +92,6 @@ export default function MeasurementsScreen() {
           </View>
 
           <View style={staticStyles.footer}>
-            {/* Botón de Atrás Secundario */}
             <Pressable 
               style={s.backButtonSecondary} 
               onPress={() => router.back()}

@@ -17,23 +17,21 @@ import { useUser } from '../context/UserContext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// 🌟 Componente individual para cada trozo de confeti (Evita errores en Web)
 const ConfettiPiece = ({ index }: { index: number }) => {
   const translateY = useSharedValue(-100);
   const rotate = useSharedValue(0);
   const horizontalOffset = useSharedValue(Math.random() * 40 - 20);
 
-  const size = 7 + Math.random() * 9; // Un pelín más grandes para que se vean mejor los pasteles
+  const size = 7 + Math.random() * 9;
 
-  // 🌟 PALETA SUPER PASTEL SOFISTICADA
   const palette = [
-    '#FFD1DC', // Rosa Pastel Suave
-    '#B2E2F2', // Azul Cielo Pastel
-    '#C1E1C1', // Verde Menta Deslavado
-    '#FDFD96', // Amarillo Vainilla
-    '#E6E6FA', // Lavanda Pálido
-    '#F4BBFF', // Orquídea Pastel
-    '#FFCC99'  // Melocotón Suave
+    '#FFD1DC', 
+    '#B2E2F2', 
+    '#C1E1C1', 
+    '#FDFD96', 
+    '#E6E6FA', 
+    '#F4BBFF', 
+    '#FFCC99'  
   ];
   
   const color = palette[index % palette.length];
@@ -41,8 +39,7 @@ const ConfettiPiece = ({ index }: { index: number }) => {
 
   useEffect(() => {
     const delay = Math.random() * 2000;
-    const duration = 3000 + Math.random() * 2500; // Caída un poco más lenta y majestuosa
-
+    const duration = 3000 + Math.random() * 2500; 
     translateY.value = withDelay(
       delay,
       withRepeat(withTiming(SCREEN_HEIGHT + 100, { duration, easing: Easing.linear }), -1, false)
@@ -70,10 +67,10 @@ const ConfettiPiece = ({ index }: { index: number }) => {
           top: -20,
           left: randomX,
           width: size,
-          height: index % 3 === 0 ? size * 1.6 : size, // Mezcla de formas
-          borderRadius: index % 2 === 0 ? size : 3, // Círculos y rectángulos suaves
+          height: index % 3 === 0 ? size * 1.6 : size, 
+          borderRadius: index % 2 === 0 ? size : 3, 
           backgroundColor: color,
-          opacity: 0.75, // Ligeramente transparentes para mayor suavidad
+          opacity: 0.75, 
         },
         animatedStyle,
       ]}
@@ -104,7 +101,6 @@ export default function SuccessScreen() {
 
   return (
     <SafeAreaView style={s.container}>
-      {/* Sistema de Confeti Seguro y PASTEL 🌸 */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
         {[...Array(35)].map((_, i) => (
           <ConfettiPiece key={i} index={i} />
@@ -113,7 +109,6 @@ export default function SuccessScreen() {
 
       <View style={staticStyles.content}>
         
-        {/* Trofeo Animado */}
         <Animated.View entering={ZoomIn.duration(800).springify()} style={s.iconCircle}>
           <Ionicons name="trophy" size={60} color={colors.gold} />
         </Animated.View>
@@ -135,7 +130,6 @@ export default function SuccessScreen() {
           </Text>
         </Animated.View>
 
-        {/* Tarjeta de Estadísticas */}
         <Animated.View entering={FadeInDown.delay(400)} style={s.statsCard}>
           <View style={staticStyles.statBox}>
             <Ionicons name="time-outline" size={20} color={colors.textMuted} style={{marginBottom: 8}} />
@@ -152,7 +146,6 @@ export default function SuccessScreen() {
           </View>
         </Animated.View>
 
-        {/* Mensaje de Racha */}
         <Animated.View entering={FadeInDown.delay(600)} style={s.streakBadge}>
           <Ionicons name="flash" size={18} color={colors.accent} />
           <Text style={s.streakText}>¡Racha de {user.streak + 1} días activa!</Text>

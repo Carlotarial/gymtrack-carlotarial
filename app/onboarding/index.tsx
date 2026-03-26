@@ -45,7 +45,6 @@ export default function NameScreen() {
 
   return (
     <View style={s.container}>
-      {/* Blobs de fondo: Fuera del KeyboardAvoidingView para que no se muevan */}
       <Animated.View entering={FadeIn.delay(200).duration(1500)} style={s.blob1} />
       <Animated.View entering={FadeIn.delay(400).duration(1500)} style={s.blob2} />
 
@@ -138,7 +137,6 @@ export default function NameScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* Modal de Selección de Perfil */}
       <Modal
         visible={showProfiles}
         transparent
@@ -192,12 +190,12 @@ export default function NameScreen() {
 const staticStyles = StyleSheet.create({
   content: { flex: 1, paddingTop: 20 },
   inputContainer: { marginTop: 48 },
-  footer: { paddingBottom: 60, marginTop: 40 }, // Un poco de margen superior para el footer
+  footer: { paddingBottom: 60, marginTop: 40 }, 
 });
 
 const dynamicStyles = (c: AppColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: c.background, overflow: 'hidden' },
-  mainWrapper: { flex: 1, paddingHorizontal: 32 }, // Contenedor interno para el scroll
+  mainWrapper: { flex: 1, paddingHorizontal: 32 }, 
   
   blob1: { position: 'absolute', width: SCREEN_WIDTH * 0.8, height: SCREEN_WIDTH * 0.8, borderRadius: SCREEN_WIDTH * 0.4, backgroundColor: c.accentLight, top: -100, right: -100, opacity: 0.6 },
   blob2: { position: 'absolute', width: SCREEN_WIDTH * 0.6, height: SCREEN_WIDTH * 0.6, borderRadius: SCREEN_WIDTH * 0.3, backgroundColor: c.goldLight, bottom: 20, left: -100, opacity: 0.4 },

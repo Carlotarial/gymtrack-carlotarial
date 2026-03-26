@@ -4,7 +4,6 @@ import { useWorkoutPlayer } from '@/hooks/useWorkoutPlayer';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-// 🌟ScrollView añadida aquí abajo:
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, FadeInDown, FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 
@@ -30,7 +29,6 @@ export default function WorkoutScreen() {
 
   return (
     <View style={s.container}>
-      {/* Header con progreso */}
       <Animated.View entering={FadeInDown.delay(100)} style={s.header}>
         <Pressable onPress={() => router.back()} style={s.closeButton}>
           <Ionicons name="close" size={28} color={colors.text} />
@@ -50,7 +48,6 @@ export default function WorkoutScreen() {
           exiting={FadeOutLeft.duration(200)}
           style={s.content}
         >
-          {/* Nombre del Ejercicio Estilo Editorial */}
           <View style={s.titleContainer}>
             <Text style={s.exerciseTitle}>
               <Text style={s.exerciseTitleLight}>Ahora: </Text>
@@ -63,7 +60,6 @@ export default function WorkoutScreen() {
             </View>
           </View>
 
-          {/* Visualizador de Ejercicio */}
           <View style={s.gifWrapper}>
             <View style={s.gifContainer}>
               <Image
@@ -82,7 +78,6 @@ export default function WorkoutScreen() {
             </View>
           </View>
 
-          {/* Cronómetro Centralizado */}
           <View style={s.timerSection}>
             <Text style={s.timerValue}>{timer.formatted}</Text>
             <Text style={s.timerLabel}>TIEMPO TRANSCURRIDO</Text>
@@ -90,7 +85,6 @@ export default function WorkoutScreen() {
         </Animated.View>
       </ScrollView>
 
-      {/* Footer Fijo */}
       <Animated.View entering={FadeInDown.delay(400)} style={s.footer}>
         {player.nextExercise && (
           <View style={s.nextPreviewCard}>

@@ -22,7 +22,6 @@ export default function RoutineScreen() {
     }
   };
 
-  // 🌟 FUNCIÓN PARA LANZAR EL WORKOUT DESDE UN PUNTO ESPECÍFICO
   const startWorkoutAt = (index: number) => {
     router.push({ 
       pathname: '/workout', 
@@ -36,7 +35,6 @@ export default function RoutineScreen() {
 
   return (
     <View style={s.container}>
-      {/* Header Editorial */}
       <Animated.View entering={FadeInDown.duration(400)} style={s.header}>
         <Pressable onPress={handleBack} style={s.backButton}>
           <Ionicons name="chevron-back" size={28} color={colors.text} />
@@ -50,7 +48,6 @@ export default function RoutineScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={staticStyles.scrollContent}>
         
-        {/* Banner de Métricas */}
         <Animated.View entering={FadeInDown.delay(100)} style={s.infoBanner}>
           <View style={staticStyles.infoItem}>
             <Ionicons name="time-outline" size={24} color="#4A90E2" style={{marginBottom: 6}} />
@@ -75,7 +72,6 @@ export default function RoutineScreen() {
           <Text style={s.sectionTitle}>Plan de entrenamiento</Text>
         </Animated.View>
 
-        {/* 🌟 Lista de Ejercicios Convertidos en Botones */}
         {exercises.map((item, index) => (
           <Animated.View entering={FadeInUp.delay(300 + (index * 100))} key={`${item.id}-${index}`}>
             <Pressable 
@@ -139,7 +135,6 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   exerciseName: { fontSize: 16, fontWeight: '700', color: c.text, letterSpacing: -0.3 },
   exerciseReps: { fontSize: 13, color: c.textSecondary, marginTop: 2, fontWeight: '600' },
   
-  // 🌟 Pequeño indicador de play en cada tarjeta
   playCircle: { width: 28, height: 28, borderRadius: 14, backgroundColor: c.accentLight, justifyContent: 'center', alignItems: 'center', marginLeft: 8 },
 
   startButton: { flexDirection: 'row', backgroundColor: c.buttonPrimary, padding: 22, borderRadius: 28, alignItems: 'center', justifyContent: 'center', marginTop: 30, shadowColor: c.accent, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.2, shadowRadius: 20, elevation: 6 },

@@ -11,9 +11,6 @@ export interface Exercise {
 
 export type MuscleGroup = 'piernas' | 'pecho' | 'core' | 'espalda' | 'full-body';
 
-/**
- * URLs de GIFs reales (Fuente: ExerciseDB Open Source)
- */
 const getGifUrl = (id: string) => `https://raw.githubusercontent.com/omercotkd/exercises-gifs/main/assets/${id}.gif`;
 
 export const ALL_EXERCISES: Exercise[] = [
@@ -129,9 +126,7 @@ export const ALL_EXERCISES: Exercise[] = [
   },
 ];
 
-/**
- * Obtener todos los detalles de una lista de IDs de ejercicios
- */
+
 export function getFullExerciseDetails(ids: string[]): Exercise[] {
   return ids.map(id => ALL_EXERCISES.find(e => e.id === id) as Exercise).filter(Boolean);
 }

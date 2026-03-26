@@ -1,10 +1,8 @@
-// Tips del día para la sección del dashboard
-
 export interface Tip {
   id: string;
   title: string;
   text: string;
-  icon: string; // Ionicons name
+  icon: string; 
 }
 
 export const ALL_TIPS: Tip[] = [
@@ -40,9 +38,6 @@ export const ALL_TIPS: Tip[] = [
   },
 ];
 
-/**
- * Devuelve un tip aleatorio cada vez que se llama (recarga).
- */
 export function getDailyTip(): Tip {
   const randomIndex = Math.floor(Math.random() * ALL_TIPS.length);
   return ALL_TIPS[randomIndex];
