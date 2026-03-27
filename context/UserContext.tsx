@@ -126,12 +126,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updatedUser = { ...appState.user, ...newData };
     
-    const updatedProfiles = appState.allUsers.map(p => 
-      p.name === appState.user.name ? updatedUser : p
-    );
+    let updatedProfiles;
+    const isNewUser = appState.user.name === '';
 
-    if (newData.name && !appState.allUsers.find(p => p.name === updatedUser.name)) {
-        updatedProfiles.push(updatedUser);
+    if (isNewUser) {
+      updatedProfiles = [...appState.allUsers, updatedUser];
+    } else {
+      updatedProfiles = appState.allUsers.map(p => 
+        p.name === appState.user.name ? updatedUser : p
+      );
     }
 
     setAppState({ status: 'ready', user: updatedUser, allUsers: updatedProfiles });

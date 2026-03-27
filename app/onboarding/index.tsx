@@ -3,7 +3,7 @@ import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeInUp, SlideInDown } from 'react-native-reanimated';
 
@@ -12,10 +12,16 @@ const isWeb = Platform.OS === 'web';
 
 export default function NameScreen() {
   const router = useRouter();
-  const { updateUser, allUsers, switchUser, isLoading } = useUser();
+  const { updateUser, allUsers, switchUser, logout, isLoading, user } = useUser();
   const { colors, setMode } = useTheme();
   const [name, setName] = useState('');
   const [showProfiles, setShowProfiles] = useState(false);
+
+  useEffect(() => {
+    if (user.name !== '') {
+      logout();
+    }
+  }, []);
 
   const trimmedName = name.trim();
   const isNameTaken = allUsers.some(
