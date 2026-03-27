@@ -17,7 +17,6 @@ export default function NameScreen() {
   const [name, setName] = useState('');
   const [showProfiles, setShowProfiles] = useState(false);
 
-  // 🛡️ Seguridad: Si ya hay un usuario a medias, limpiamos para empezar de cero
   useEffect(() => {
     if (user.name !== '') {
       logout();
@@ -26,7 +25,6 @@ export default function NameScreen() {
 
   const trimmedName = name.trim();
   
-  // 🔍 Lógica de validación
   const isNameTaken = allUsers.some(
     (u) => u.name.toLowerCase() === trimmedName.toLowerCase()
   );
@@ -70,7 +68,6 @@ export default function NameScreen() {
 
   return (
     <View style={s.container}>
-      {/* Blobs decorativos con la paleta de GymTrack */}
       <Animated.View entering={FadeIn.delay(200).duration(1500)} style={s.blob1} />
       <Animated.View entering={FadeIn.delay(400).duration(1500)} style={s.blob2} />
 
@@ -126,7 +123,6 @@ export default function NameScreen() {
                 </Text>
               </Animated.View>
 
-              {/* Input de Nombre con LIMITACIÓN DE CARACTERES */}
               <Animated.View entering={FadeInUp.duration(800).delay(500)} style={staticStyles.inputContainer}>
                 <View style={[s.inputWrapper, isNameTaken && { borderColor: '#FF6B6B', borderWidth: 1.5 }]}>
                   <Ionicons 
@@ -143,7 +139,7 @@ export default function NameScreen() {
                     onChangeText={setName}
                     autoCapitalize="words"
                     autoCorrect={false}
-                    maxLength={15} // 🛡️ SOLUCIÓN: Limita el nombre para que no rompa el diseño
+                    maxLength={15} 
                     selectionColor={colors.accentDark}
                   />
                 </View>
@@ -163,7 +159,6 @@ export default function NameScreen() {
               </Animated.View>
             </View>
 
-            {/* Botón de acción principal */}
             <Animated.View entering={FadeInUp.duration(800).delay(700)} style={staticStyles.footer}>
               <Pressable
                 style={[s.nextButton, !canContinue && s.nextButtonDisabled]}
@@ -184,7 +179,6 @@ export default function NameScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* Modal de Selección de Perfiles (Multicuenta) */}
       <Modal
         visible={showProfiles}
         transparent
