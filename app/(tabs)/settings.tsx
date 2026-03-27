@@ -73,10 +73,13 @@ export default function SettingsScreen() {
   const handleLogout = async () => { await logout(); router.replace('/onboarding' as any); };
   const handleDeleteProfile = async () => { await deleteProfile(user.name); setShowDeleteConfirm(false); router.replace('/onboarding' as any); };
   
-  const handleThemeToggle = () => {
+  const handleThemeToggle = async () => {
     const modes: Array<'light' | 'dark' | 'system'> = ['light', 'dark', 'system'];
     const nextMode = modes[(modes.indexOf(mode) + 1) % modes.length];
+    
     setMode(nextMode);
+    
+    await updateUser({ theme: nextMode });
   };
 
   const getThemeLabel = () => {

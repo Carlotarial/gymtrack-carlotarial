@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { LogBox, Platform } from 'react-native';
 
+// 🛡️ LIMPIEZA DE CONSOLA
 LogBox.ignoreLogs([
   '[Reanimated]',        
   'shadow*',             
@@ -28,8 +29,9 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <UserProvider>
+    /* 🌟 CAMBIO CLAVE: UserProvider envuelve a ThemeProvider */
+    <UserProvider>
+      <ThemeProvider>
         <StatusBar style="auto" hidden={false} translucent={true} />
         
         <Stack screenOptions={{ headerShown: false }}>
@@ -41,7 +43,7 @@ export default function RootLayout() {
           <Stack.Screen name="workout" options={{ presentation: 'fullScreenModal' }} />
           <Stack.Screen name="success" options={{ headerShown: false }} />
         </Stack>
-      </UserProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }

@@ -101,8 +101,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const error = appState.status === 'error' ? appState.error : undefined;
 
   const saveAll = async (activeUser: UserData, profiles: UserData[]) => {
-    await AsyncStorage.setItem('@user_data', JSON.stringify(activeUser));
-    await AsyncStorage.setItem('@all_profiles', JSON.stringify(profiles));
+    try {
+      await AsyncStorage.setItem('@user_data', JSON.stringify(activeUser));
+      await AsyncStorage.setItem('@all_profiles', JSON.stringify(profiles));
+    } catch (e) {
+      console.error("Error saving data:", e);
+    }
   };
 
   const updateUser = async (newData: Partial<UserData>) => {
@@ -110,7 +114,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (newData.name) {
       const newNameTrimmed = newData.name.trim();
-      
       const nameExists = appState.allUsers.some(
         p => p.name.toLowerCase() === newNameTrimmed.toLowerCase() && p.name !== appState.user.name
       );
@@ -123,12 +126,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updatedUser = { ...appState.user, ...newData };
     
-    let updatedProfiles = appState.allUsers.map(p => 
+    const updatedProfiles = appState.allUsers.map(p => 
       p.name === appState.user.name ? updatedUser : p
     );
 
     if (newData.name && !appState.allUsers.find(p => p.name === updatedUser.name)) {
-        updatedProfiles = [...updatedProfiles, updatedUser];
+        updatedProfiles.push(updatedUser);
     }
 
     setAppState({ status: 'ready', user: updatedUser, allUsers: updatedProfiles });
