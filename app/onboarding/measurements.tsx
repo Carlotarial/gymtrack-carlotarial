@@ -11,10 +11,16 @@ export default function MeasurementsScreen() {
   const { userName, goal, activity } = useLocalSearchParams();
   const { updateUser } = useUser();
   const { colors } = useTheme();
+  
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
 
-  const isValid = weight.length > 0 && height.length > 0;
+  const handleNumericInput = (text: string, setter: (val: string) => void) => {
+    const cleanText = text.replace(/[^0-9]/g, '');
+    setter(cleanText);
+  };
+
+  const isValid = weight.length >= 2 && height.length >= 2;
   const s = dynamicStyles(colors);
 
   return (
@@ -29,8 +35,15 @@ export default function MeasurementsScreen() {
       >
         <Animated.View entering={FadeInRight.duration(400)} style={{ flex: 1 }}>
           <View style={staticStyles.stepContainer}>
-            { [1, 2, 3, 4].map((step) => (
-              <View key={step} style={[s.stepDot, step === 4 && s.stepDotActive, step < 4 && s.stepDotDone]} />
+            { [1, 2, 3, 4, 5].map((step) => (
+              <View 
+                key={step} 
+                style={[
+                  s.stepDot, 
+                  step === 5 && s.stepDotActive, 
+                  step < 5 && s.stepDotDone
+                ]} 
+              />
             ))}
           </View>
 
@@ -46,7 +59,9 @@ export default function MeasurementsScreen() {
               <Text style={s.titleDot}>.</Text>
             </Text>
             
-            <Text style={s.subtitle}>Esto nos permite calcular tu IMC y ajustar tus objetivos calóricos con la máxima precisión.</Text>
+            <Text style={s.subtitle}>
+              Esto nos permite calcular tu IMC y ajustar tus objetivos calóricos con la máxima precisión.
+            </Text>
           </View>
 
           <View style={staticStyles.inputsContainer}>
@@ -57,10 +72,10 @@ export default function MeasurementsScreen() {
                   style={s.input}
                   placeholder="00"
                   placeholderTextColor={colors.textMuted}
-                  keyboardType="numeric"
+                  keyboardType="number-pad" 
                   value={weight}
-                  onChangeText={setWeight}
-                  maxLength={3}
+                  onChangeText={(val) => handleNumericInput(val, setWeight)}
+                  maxLength={3} 
                   selectionColor={colors.accentDark}
                   cursorColor={colors.accentDark}
                   underlineColorAndroid="transparent"
@@ -76,10 +91,10 @@ export default function MeasurementsScreen() {
                   style={s.input}
                   placeholder="000"
                   placeholderTextColor={colors.textMuted}
-                  keyboardType="numeric"
+                  keyboardType="number-pad" 
                   value={height}
-                  onChangeText={setHeight}
-                  maxLength={3}
+                  onChangeText={(val) => handleNumericInput(val, setHeight)}
+                  maxLength={3} 
                   selectionColor={colors.accentDark}
                   cursorColor={colors.accentDark}
                   underlineColorAndroid="transparent"

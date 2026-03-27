@@ -81,7 +81,6 @@ export default function NameScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={s.mainWrapper}>
-            {/* Indicador de pasos */}
             <View style={s.stepContainer}>
               <View style={[s.stepDot, s.stepDotActive]} />
               <View style={s.stepDot} />
@@ -91,7 +90,6 @@ export default function NameScreen() {
             </View>
 
             <View style={staticStyles.content}>
-              {/* Logo con animación */}
               <Animated.View entering={FadeInUp.duration(800).delay(100)}>
                 <View style={s.logoWrapper}>
                   <View style={s.logoInner}>
