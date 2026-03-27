@@ -29,4 +29,4 @@ GymTrack es una aplicación móvil de fitness desarrollada con React Native y Ex
 * **/assets**: Imágenes, logos e iconos.
 * **/components**: Componentes visuales reutilizables.
 
-Desarrollado por Carlota Rial Astorga.
+TFC desarrollado por Carlota Rial Astorga.
