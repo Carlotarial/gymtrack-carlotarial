@@ -56,13 +56,13 @@ export const ALL_EXERCISES: Exercise[] = [
   },
   { 
     id: 'e5', 
-    name: 'Flexiones Diamante', 
-    reps: '8 Repeticiones', 
-    sets: '4 x 8', 
-    icon: 'body-outline', 
-    gifSource: require('../assets/images/exercises/diamante.gif'), 
-    muscleGroup: 'pecho',
-    description: 'Forma un diamante con tus manos bajo el esternón para focalizar el trabajo en los tríceps.'
+    name: 'Crunch Abdominal', 
+    reps: '15 Repeticiones', 
+    sets: '4 x 15', 
+    icon: 'fitness-outline', 
+    gifSource: require('../assets/images/exercises/crunch.gif'), 
+    muscleGroup: 'core',
+    description: 'Eleva ligeramente el torso contrayendo el abdomen, sin tirar del cuello, para aislar el recto abdominal.'
   },
   { 
     id: 'e6', 
