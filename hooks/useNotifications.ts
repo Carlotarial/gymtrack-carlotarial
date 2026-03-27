@@ -1,6 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -37,7 +37,6 @@ export function useNotifications() {
           return false;
         }
         
-        // Programar recordatorio diario a las 18:00
         await Notifications.scheduleNotificationAsync({
           content: {
             title: "¡Es hora de moverse! 🚀",

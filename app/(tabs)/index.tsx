@@ -256,13 +256,11 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   notificationBtn: { width: 50, height: 50, borderRadius: 25, backgroundColor: c.surface, justifyContent: 'center', alignItems: 'center', elevation: 4 },
   notifBadge: { position: 'absolute', top: 12, right: 12, width: 10, height: 10, borderRadius: 5, backgroundColor: '#FF4B4B', borderWidth: 2, borderColor: c.surface },
   
-  // Estilos de Métricas
   metricsRow: { flexDirection: 'row', backgroundColor: c.surface, borderRadius: 32, paddingVertical: 24, marginBottom: 40, alignItems: 'center', elevation: 5 },
   metricValue: { fontSize: 20, fontWeight: '800', color: c.text },
   metricLabel: { fontSize: 13, color: c.textSecondary, fontWeight: '600', marginTop: 2 },
   metricDivider: { width: 1, height: 40, backgroundColor: c.divider },
   
-  // 🌟 Estilos del Tooltip de Agua Restaurados
   waterPlusBadge: { position: 'absolute', top: -2, right: -2, backgroundColor: '#4A90E2', width: 12, height: 12, borderRadius: 6, justifyContent: 'center', alignItems: 'center', borderWidth: 1.5, borderColor: c.surface },
   waterTooltip: { position: 'absolute', top: -45, backgroundColor: c.accentDark, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10, zIndex: 100 },
   waterTooltipText: { color: '#FFFFFF', fontSize: 9, fontWeight: '900', textTransform: 'uppercase' },

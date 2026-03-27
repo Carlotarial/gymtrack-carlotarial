@@ -1,19 +1,15 @@
 import { Exercise, getFullExerciseDetails } from '@/data/exercises';
-import { getWorkoutById, ALL_WORKOUTS } from '@/data/workouts';
+import { ALL_WORKOUTS, getWorkoutById } from '@/data/workouts';
 import { useCallback, useState } from 'react';
 
-/**
- * Hook que encapsula la lógica de navegación entre ejercicios durante un entrenamiento.
- */
+
 export function useWorkoutPlayer(workoutId: string) {
-  // Obtenemos los ejercicios reales de esa rutina o asignamos un fallback de seguridad
   const workout = getWorkoutById(workoutId) || ALL_WORKOUTS[0];
   const exercises = getFullExerciseDetails(workout.exercises);
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fallback si por alguna razón falla el mapeo
   const currentExercise: Exercise = exercises[currentIndex] || exercises[0];
   const totalExercises = exercises.length;
   const isLastExercise = currentIndex >= totalExercises - 1;

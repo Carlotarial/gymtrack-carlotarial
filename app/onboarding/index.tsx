@@ -17,7 +17,6 @@ export default function NameScreen() {
   const [name, setName] = useState('');
   const [showProfiles, setShowProfiles] = useState(false);
 
-  // 🛡️ LÓGICA DE VALIDACIÓN EN TIEMPO REAL
   const trimmedName = name.trim();
   const isNameTaken = allUsers.some(
     (u) => u.name.toLowerCase() === trimmedName.toLowerCase()
@@ -136,7 +135,6 @@ export default function NameScreen() {
                   />
                 </View>
 
-                {/* Mensaje de error si el nombre está duplicado */}
                 {isNameTaken && (
                   <Animated.Text entering={FadeInUp} style={s.errorText}>
                     Ese nombre ya tiene un perfil activo.

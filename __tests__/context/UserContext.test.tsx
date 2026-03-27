@@ -1,9 +1,8 @@
-import React from 'react';
-import { renderHook, act, waitFor } from '@testing-library/react-native';
-import { UserProvider, useUser } from '../../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
+import React from 'react';
+import { UserProvider, useUser } from '../../context/UserContext';
 
-// Mock de AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(() => Promise.resolve(null)),
   setItem: jest.fn(() => Promise.resolve()),
@@ -19,7 +18,6 @@ describe('UserContext', () => {
     const wrapper = ({ children }: any) => <UserProvider>{children}</UserProvider>;
     const { result } = renderHook(() => useUser(), { wrapper });
 
-    // Esperar a que pase de "loading" a "ready"
     await waitFor(() => {
       expect(result.current.status).toBe('ready');
     });
@@ -56,14 +54,12 @@ describe('UserContext', () => {
       expect(result.current.status).toBe('ready');
     });
 
-    // Simulamos un update antes
     await act(async () => {
       await result.current.updateUser({ name: 'Carlota' });
     });
     
     expect(result.current.user.name).toBe('Carlota');
 
-    // Luego reseteamos
     await act(async () => {
       await result.current.resetUser();
     });

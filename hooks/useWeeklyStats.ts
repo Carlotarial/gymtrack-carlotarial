@@ -1,39 +1,28 @@
-import { useMemo } from 'react';
 import { WorkoutSession } from '@/context/UserContext';
+import { useMemo } from 'react';
 
 interface WeeklyStats {
-  /** Kcal por día [L, M, X, J, V, S, D] */
   dailyKcal: number[];
-  /** Barras normalizadas 0-100 para la gráfica */
   bars: number[];
-  /** Total kcal de la semana */
   totalKcal: number;
-  /** Sesiones de la semana */
   sessionsThisWeek: number;
-  /** Total minutos de la semana */
   totalMinutes: number;
-  /** Si hay actividad en la semana */
   hasActivity: boolean;
 }
 
-/**
- * Hook que calcula estadísticas semanales a partir del historial de entrenamientos.
- */
+
 export function useWeeklyStats(workoutHistory: WorkoutSession[]): WeeklyStats {
   return useMemo(() => {
-    // Calcular inicio de la semana (lunes)
     const now = new Date();
-    const dayOfWeek = now.getDay(); // 0=domingo
+    const dayOfWeek = now.getDay(); 
     const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     const monday = new Date(now);
     monday.setHours(0, 0, 0, 0);
     monday.setDate(monday.getDate() - mondayOffset);
 
-    // Filtrar sesiones de esta semana
     const weekSessions = workoutHistory.filter(s => new Date(s.date) >= monday);
 
-    // Agrupar kcal por día de la semana
-    const dailyKcal = [0, 0, 0, 0, 0, 0, 0]; // L M X J V S D
+    const dailyKcal = [0, 0, 0, 0, 0, 0, 0]; 
     weekSessions.forEach((session) => {
       const date = new Date(session.date);
       const day = date.getDay();
@@ -41,7 +30,6 @@ export function useWeeklyStats(workoutHistory: WorkoutSession[]): WeeklyStats {
       dailyKcal[index] += session.kcal;
     });
 
-    // Normalizar a porcentajes para la gráfica
     const max = Math.max(...dailyKcal, 1);
     const bars = dailyKcal.map((val) => Math.round((val / max) * 100));
 
@@ -61,9 +49,7 @@ export function useWeeklyStats(workoutHistory: WorkoutSession[]): WeeklyStats {
   }, [workoutHistory]);
 }
 
-/**
- * Formatear una fecha ISO a texto relativo (Hoy, Ayer, Hace X días).
- */
+
 export function formatRelativeDate(isoString: string): string {
   const date = new Date(isoString);
   const now = new Date();

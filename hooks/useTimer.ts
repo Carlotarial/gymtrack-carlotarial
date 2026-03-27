@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * Hook reutilizable para un cronómetro.
- * Inicia automáticamente y expone el tiempo transcurrido y controles.
- */
+
 export function useTimer(autoStart: boolean = true) {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(autoStart);

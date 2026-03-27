@@ -35,13 +35,11 @@ export default function MeasurementsScreen() {
           </View>
 
           <View style={staticStyles.header}>
-            {/* Etiqueta superior */}
             <View style={s.overlineContainer}>
               <View style={s.overlineDot} />
               <Text style={s.overlineText}>GYMTRACK ONBOARDING</Text>
             </View>
 
-            {/* Título Editorial Personalizado */}
             <Text style={s.title}>
               <Text style={s.titleLight}>Tus{"\n"}</Text>
               <Text style={s.titleBold}>Medidas</Text>
@@ -133,7 +131,6 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   stepDotActive: { width: 32, backgroundColor: c.accent },
   stepDotDone: { backgroundColor: c.gold },
   
-  // Estilos del título editorial
   overlineContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   overlineDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: c.accent, marginRight: 8 },
   overlineText: { fontSize: 11, fontWeight: '800', color: c.accentDark, letterSpacing: 2 },

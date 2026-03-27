@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react-native';
 import { useTimer } from '../../hooks/useTimer';
 
 jest.useFakeTimers();
@@ -18,7 +18,7 @@ describe('useTimer hook', () => {
     const { result } = renderHook(() => useTimer(true, 0));
     
     act(() => {
-      jest.advanceTimersByTime(3000); // Avanzar 3 segundos
+      jest.advanceTimersByTime(3000); 
     });
     
     expect(result.current.seconds).toBe(3);
