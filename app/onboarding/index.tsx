@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeInUp, SlideInDown } from 'react-native-reanimated';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
 
 export default function NameScreen() {
@@ -17,6 +17,7 @@ export default function NameScreen() {
   const [name, setName] = useState('');
   const [showProfiles, setShowProfiles] = useState(false);
 
+  // 🛡️ Seguridad: Si ya hay un usuario a medias, limpiamos para empezar de cero
   useEffect(() => {
     if (user.name !== '') {
       logout();
@@ -24,11 +25,13 @@ export default function NameScreen() {
   }, []);
 
   const trimmedName = name.trim();
+  
+  // 🔍 Lógica de validación
   const isNameTaken = allUsers.some(
     (u) => u.name.toLowerCase() === trimmedName.toLowerCase()
   );
   const isNameTooShort = trimmedName.length < 2;
-  const canContinue = !isNameTaken && !isNameTooShort;
+  const canContinue = !isNameTaken && !isNameTooShort && trimmedName.length <= 15;
 
   if (isLoading) {
     return (
@@ -67,13 +70,13 @@ export default function NameScreen() {
 
   return (
     <View style={s.container}>
+      {/* Blobs decorativos con la paleta de GymTrack */}
       <Animated.View entering={FadeIn.delay(200).duration(1500)} style={s.blob1} />
       <Animated.View entering={FadeIn.delay(400).duration(1500)} style={s.blob2} />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <ScrollView 
           contentContainerStyle={{ flexGrow: 1 }} 
@@ -81,6 +84,7 @@ export default function NameScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={s.mainWrapper}>
+            {/* Indicador de pasos */}
             <View style={s.stepContainer}>
               <View style={[s.stepDot, s.stepDotActive]} />
               <View style={s.stepDot} />
@@ -90,6 +94,7 @@ export default function NameScreen() {
             </View>
 
             <View style={staticStyles.content}>
+              {/* Logo con animación */}
               <Animated.View entering={FadeInUp.duration(800).delay(100)}>
                 <View style={s.logoWrapper}>
                   <View style={s.logoInner}>
@@ -121,6 +126,7 @@ export default function NameScreen() {
                 </Text>
               </Animated.View>
 
+              {/* Input de Nombre con LIMITACIÓN DE CARACTERES */}
               <Animated.View entering={FadeInUp.duration(800).delay(500)} style={staticStyles.inputContainer}>
                 <View style={[s.inputWrapper, isNameTaken && { borderColor: '#FF6B6B', borderWidth: 1.5 }]}>
                   <Ionicons 
@@ -137,6 +143,7 @@ export default function NameScreen() {
                     onChangeText={setName}
                     autoCapitalize="words"
                     autoCorrect={false}
+                    maxLength={15} // 🛡️ SOLUCIÓN: Limita el nombre para que no rompa el diseño
                     selectionColor={colors.accentDark}
                   />
                 </View>
@@ -156,6 +163,7 @@ export default function NameScreen() {
               </Animated.View>
             </View>
 
+            {/* Botón de acción principal */}
             <Animated.View entering={FadeInUp.duration(800).delay(700)} style={staticStyles.footer}>
               <Pressable
                 style={[s.nextButton, !canContinue && s.nextButtonDisabled]}
@@ -176,6 +184,7 @@ export default function NameScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
 
+      {/* Modal de Selección de Perfiles (Multicuenta) */}
       <Modal
         visible={showProfiles}
         transparent
@@ -266,7 +275,7 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   loginButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 24, paddingVertical: 12 },
   loginButtonText: { fontSize: 15, fontWeight: '700', color: c.accentDark, marginRight: 8, textDecorationLine: 'underline' },
 
-  nextButton: { flexDirection: 'row', backgroundColor: c.buttonPrimary, padding: 24, borderRadius: 32, alignItems: 'center', justifyContent: 'center', shadowColor: c.accent, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.25, shadowRadius: 24, elevation: 5 },
+  nextButton: { flexDirection: 'row', backgroundColor: c.buttonPrimary, padding: 24, borderRadius: 32, alignItems: 'center', justifyContent: 'center', shadowColor: c.accent, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.25, shadowRadius: 24, elevation: 5 },
   nextButtonDisabled: { backgroundColor: c.buttonDisabled, shadowOpacity: 0 },
   nextButtonText: { fontSize: 18, fontWeight: '800', color: c.buttonPrimaryText, marginRight: 10 },
 
