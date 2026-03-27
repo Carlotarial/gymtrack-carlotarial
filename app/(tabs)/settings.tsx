@@ -42,8 +42,6 @@ const FAQ_DATA = [
   { q: '¿Quién ha desarrollado la app?', a: 'Esta aplicación es un proyecto exclusivo desarrollado para el TFC.', icon: 'code-slash-outline' },
 ];
 
-const isWeb = Platform.OS === 'web';
-
 export default function SettingsScreen() {
   const router = useRouter();
   const { user, updateUser, logout, deleteProfile } = useUser();
@@ -52,6 +50,7 @@ export default function SettingsScreen() {
 
   const [showStats, setShowStats] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  
   const [tempWeight, setTempWeight] = useState(user.weight || '');
   const [tempHeight, setTempHeight] = useState(user.height || '');
 
@@ -70,32 +69,30 @@ export default function SettingsScreen() {
     return { userInitial: initial, userEmail: email };
   }, [userName]);
 
+  const handleNumericInput = (text: string, setter: (val: string) => void) => {
+    const cleanText = text.replace(/[^0-9]/g, '');
+    setter(cleanText);
+  };
+
+  const handleSaveStats = async () => {
+    if (tempWeight.length >= 2 && tempHeight.length >= 2) {
+      await updateUser({ weight: tempWeight, height: tempHeight });
+      setIsEditing(false);
+    }
+  };
+
   const handleLogout = async () => { await logout(); router.replace('/onboarding' as any); };
   const handleDeleteProfile = async () => { await deleteProfile(user.name); setShowDeleteConfirm(false); router.replace('/onboarding' as any); };
   
   const handleThemeToggle = async () => {
     const modes: Array<'light' | 'dark' | 'system'> = ['light', 'dark', 'system'];
     const nextMode = modes[(modes.indexOf(mode) + 1) % modes.length];
-    
     setMode(nextMode);
-    
     await updateUser({ theme: nextMode });
   };
 
-  const getThemeLabel = () => {
-    if (mode === 'system') return 'Sistema';
-    return mode === 'dark' ? 'Oscuro' : 'Claro';
-  };
-
-  const getThemeIcon = () => {
-    if (mode === 'system') return 'settings-outline';
-    return mode === 'dark' ? 'moon-outline' : 'sunny-outline';
-  };
-
-  const handleSaveStats = async () => {
-    await updateUser({ weight: tempWeight, height: tempHeight });
-    setIsEditing(false);
-  };
+  const getThemeLabel = () => mode === 'system' ? 'Sistema' : mode === 'dark' ? 'Oscuro' : 'Claro';
+  const getThemeIcon = () => mode === 'system' ? 'settings-outline' : mode === 'dark' ? 'moon-outline' : 'sunny-outline';
 
   const s = dynamicStyles(colors);
 
@@ -117,11 +114,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={s.profileCard}>
-          <TouchableOpacity 
-            style={s.avatarContainer} 
-            activeOpacity={0.8} 
-            onPress={() => setShowAvatarModal(true)}
-          >
+          <TouchableOpacity style={s.avatarContainer} activeOpacity={0.8} onPress={() => setShowAvatarModal(true)}>
             <View style={s.avatarImageWrapper}>
               {user.avatar ? (
                 <Image source={{ uri: user.avatar }} style={s.avatarImage} contentFit="cover" transition={200} />
@@ -129,9 +122,7 @@ export default function SettingsScreen() {
                 <Text style={s.avatarText}>{userInitial}</Text>
               )}
             </View>
-            <View style={s.avatarEditBadge}>
-              <Ionicons name="camera" size={12} color={colors.accent} />
-            </View>
+            <View style={s.avatarEditBadge}><Ionicons name="camera" size={12} color={colors.accent} /></View>
           </TouchableOpacity>
 
           <View style={staticStyles.profileInfo}>
@@ -173,9 +164,7 @@ export default function SettingsScreen() {
 
           <TouchableOpacity style={s.settingItem} onPress={() => setShowStats(!showStats)}>
             <View style={staticStyles.settingLabelGroup}>
-              <View style={[s.iconBox, { backgroundColor: colors.surfaceBorder }]}>
-                 <Ionicons name="body-outline" size={22} color={colors.textSecondary} />
-              </View>
+              <View style={[s.iconBox, { backgroundColor: colors.surfaceBorder }]}><Ionicons name="body-outline" size={22} color={colors.textSecondary} /></View>
               <Text style={s.settingText}>Ajustes de Entrenamiento</Text>
             </View>
             <Ionicons name={showStats ? "chevron-down" : "chevron-forward"} size={20} color={colors.textMuted} />
@@ -185,8 +174,8 @@ export default function SettingsScreen() {
             <Animated.View entering={FadeInDown} style={s.statsContainer}>
               <View style={staticStyles.statsHeader}>
                 <Text style={s.statsTitle}>Métricas e IA</Text>
-                <TouchableOpacity onPress={() => isEditing ? handleSaveStats() : setIsEditing(true)} style={s.editBadge}>
-                  <Text style={s.editBadgeText}>{isEditing ? 'Guardar' : 'Editar'}</Text>
+                <TouchableOpacity onPress={() => isEditing ? handleSaveStats() : setIsEditing(true)} style={[s.editBadge, isEditing && {backgroundColor: colors.accent}]}>
+                  <Text style={[s.editBadgeText, isEditing && {color: '#FFF'}]}>{isEditing ? 'Guardar' : 'Editar'}</Text>
                 </TouchableOpacity>
               </View>
               <View style={staticStyles.statsRow}>
@@ -196,10 +185,10 @@ export default function SettingsScreen() {
                     <TextInput 
                       style={s.statInput} 
                       value={tempWeight} 
-                      onChangeText={setTempWeight} 
-                      keyboardType="numeric" 
-                      maxLength={3}
-                      placeholderTextColor={colors.textMuted}
+                      onChangeText={(val) => handleNumericInput(val, setTempWeight)} 
+                      keyboardType="number-pad" 
+                      maxLength={3} 
+                      placeholder="00"
                     />
                   ) : <Text style={s.statValue}>{user.weight}kg</Text>}
                 </View>
@@ -209,10 +198,10 @@ export default function SettingsScreen() {
                     <TextInput 
                       style={s.statInput} 
                       value={tempHeight} 
-                      onChangeText={setTempHeight} 
-                      keyboardType="numeric" 
-                      maxLength={3}
-                      placeholderTextColor={colors.textMuted}
+                      onChangeText={(val) => handleNumericInput(val, setTempHeight)} 
+                      keyboardType="number-pad" 
+                      maxLength={3} 
+                      placeholder="000"
                     />
                   ) : <Text style={s.statValue}>{user.height}cm</Text>}
                 </View>
@@ -248,7 +237,6 @@ export default function SettingsScreen() {
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
           </TouchableOpacity>
-
           <TouchableOpacity style={s.settingItem} onPress={() => setShowSupport(true)}>
             <View style={staticStyles.settingLabelGroup}>
               <View style={[s.iconBox, { backgroundColor: colors.surfaceBorder }]}><Ionicons name="help-circle-outline" size={24} color={colors.textSecondary} /></View>
@@ -294,21 +282,14 @@ export default function SettingsScreen() {
         <View style={staticStyles.modalOverlay}>
           <Animated.View entering={ZoomIn} style={s.modalContentWide}>
             <View style={staticStyles.modalHeader}>
-                <View>
-                    <Text style={s.modalTitleSmall}>Centro de Ayuda</Text>
-                    <Text style={s.modalSubtitleSmall}>Preguntas frecuentes</Text>
-                </View>
-                <TouchableOpacity onPress={() => setShowSupport(false)} style={s.closeIcon}>
-                    <Ionicons name="close" size={24} color={colors.text} />
-                </TouchableOpacity>
+                <View><Text style={s.modalTitleSmall}>Centro de Ayuda</Text><Text style={s.modalSubtitleSmall}>Preguntas frecuentes</Text></View>
+                <TouchableOpacity onPress={() => setShowSupport(false)} style={s.closeIcon}><Ionicons name="close" size={24} color={colors.text} /></TouchableOpacity>
             </View>
             <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
               {FAQ_DATA.map((item, i) => (
                 <TouchableOpacity key={i} style={s.faqItem} onPress={() => setExpandedFaq(expandedFaq === i ? null : i)} activeOpacity={0.7}>
                   <View style={staticStyles.faqHeaderRow}>
-                    <View style={s.faqIconContainer}>
-                        <Ionicons name={item.icon as any} size={18} color={colors.accent} />
-                    </View>
+                    <View style={s.faqIconContainer}><Ionicons name={item.icon as any} size={18} color={colors.accent} /></View>
                     <Text style={s.faqQuestion}>{item.q}</Text>
                     <Ionicons name={expandedFaq === i ? "chevron-up" : "chevron-down"} size={16} color={colors.textMuted} />
                   </View>
@@ -326,12 +307,8 @@ export default function SettingsScreen() {
             <View style={s.warningIcon}><Ionicons name="warning" size={32} color="#FF6B6B" /></View>
             <Text style={s.modalTitle}>¿Seguro?</Text>
             <Text style={s.modalSubtitle}>Esta acción borrará todas tus rachas e historial de forma permanente.</Text>
-            <TouchableOpacity style={s.confirmDeleteBtn} onPress={handleDeleteProfile}>
-                <Text style={s.confirmDeleteText}>Borrar definitivamente</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={s.cancelBtn} onPress={() => setShowDeleteConfirm(false)}>
-                <Text style={s.cancelBtnText}>Cancelar</Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={s.confirmDeleteBtn} onPress={handleDeleteProfile}><Text style={s.confirmDeleteText}>Borrar definitivamente</Text></TouchableOpacity>
+            <TouchableOpacity style={s.cancelBtn} onPress={() => setShowDeleteConfirm(false)}><Text style={s.cancelBtnText}>Cancelar</Text></TouchableOpacity>
           </Animated.View>
         </View>
       </Modal>
@@ -378,41 +355,22 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   titleBold: { fontWeight: '900', color: c.text }, 
   titleDot: { fontWeight: '900', color: c.accent }, 
   subtitle: { fontSize: 15, color: c.textSecondary, marginTop: 8, fontWeight: '500' },
-
-  profileCard: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: c.accent, 
-    padding: 24, 
-    borderRadius: 36, 
-    marginBottom: 40,
-    shadowColor: c.accentDark,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 30
-  },
-  
+  profileCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.accent, padding: 24, borderRadius: 36, marginBottom: 40, shadowColor: c.accentDark, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.15, shadowRadius: 30 },
   avatarContainer: { position: 'relative', marginRight: 20, width: 74, height: 74 },
   avatarImageWrapper: { width: 74, height: 74, borderRadius: 37, backgroundColor: c.accentLight, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
   avatarImage: { width: '100%', height: '100%' },
   avatarText: { fontSize: 32, fontWeight: '800', color: c.accentDark },
-  avatarEditBadge: { 
-    position: 'absolute', bottom: -2, right: -2, width: 26, height: 26, borderRadius: 13, backgroundColor: '#FFF', 
-    justifyContent: 'center', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4, zIndex: 20 
-  },
-
+  avatarEditBadge: { position: 'absolute', bottom: -2, right: -2, width: 26, height: 26, borderRadius: 13, backgroundColor: '#FFF', justifyContent: 'center', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4, zIndex: 20 },
   profileName: { fontSize: 22, fontWeight: '800', color: '#FFF' },
   profileEmail: { fontSize: 14, color: '#FFF', opacity: 0.8 },
   streakMiniBadge: { flexDirection: 'row', alignItems: 'center', marginTop: 6, backgroundColor: 'rgba(255,255,255,0.2)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   streakMiniText: { color: '#FFF', fontSize: 11, fontWeight: '700', marginLeft: 4 },
-
   sectionTitle: { fontSize: 13, fontWeight: '800', color: c.textSecondary, marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1.5 },
   settingItem: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: c.surface, padding: 20, borderRadius: 28, marginBottom: 12 },
   iconBox: { width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
   settingText: { fontSize: 17, color: c.text, fontWeight: '600' },
   themeBadge: { backgroundColor: c.background, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
   themeBadgeText: { fontSize: 12, fontWeight: '700', color: c.accentDark },
-
   statsContainer: { backgroundColor: c.surface, padding: 24, borderRadius: 32, marginTop: -8, marginBottom: 20 },
   statsTitle: { fontSize: 16, fontWeight: '800', color: c.text },
   editBadge: { backgroundColor: c.accentLight, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
@@ -420,23 +378,17 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   statBox: { backgroundColor: c.background, flex: 0.48, padding: 16, borderRadius: 20, alignItems: 'center' },
   statLabel: { fontSize: 10, color: c.textSecondary, fontWeight: '800', textTransform: 'uppercase', marginBottom: 8, letterSpacing: 0.5 },
   statValue: { fontSize: 20, fontWeight: '800', color: c.text },
-  statInput: { 
-    fontSize: 20, fontWeight: '800', color: c.accent, minWidth: 60, textAlign: 'center',
-    ...Platform.select({ web: { outlineStyle: 'none' } as any })
-  },
-
+  statInput: { fontSize: 20, fontWeight: '800', color: c.accent, minWidth: 60, textAlign: 'center', ...Platform.select({ web: { outlineStyle: 'none' } as any }) },
   selectorRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
   selectorItem: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, backgroundColor: c.background, borderWidth: 1, borderColor: c.surfaceBorder },
   selectorItemActive: { backgroundColor: c.accent, borderColor: c.accent },
   selectorText: { fontSize: 12, fontWeight: '700', color: c.textSecondary },
   selectorTextActive: { color: '#FFF' },
-
   footerActions: { gap: 4, marginTop: 10 },
   logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 22, borderRadius: 28, backgroundColor: c.goldLight },
   logoutBtnText: { marginLeft: 10, fontSize: 17, fontWeight: '800', color: c.gold },
   deleteBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 16 },
   deleteBtnText: { marginLeft: 8, fontSize: 14, fontWeight: '700', color: '#FF6B6B', opacity: 0.8 },
-
   modalContent: { backgroundColor: c.surface, width: '100%', borderRadius: 40, padding: 32, alignItems: 'center' },
   modalContentWide: { backgroundColor: c.surface, width: '92%', borderRadius: 40, padding: 28 },
   modalTitle: { fontSize: 24, fontWeight: '800', color: c.text, marginBottom: 12, textAlign: 'center' },
@@ -450,12 +402,10 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
   confirmDeleteText: { color: '#FFF', fontWeight: '800', fontSize: 16 },
   cancelBtn: { padding: 16, width: '100%', alignItems: 'center' },
   cancelBtnText: { color: c.textSecondary, fontWeight: '700' },
-  
   avatarModalContent: { backgroundColor: c.background, width: '100%', borderTopLeftRadius: 40, borderTopRightRadius: 40, padding: 32, position: 'absolute', bottom: 0, minHeight: 450 },
   avatarGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 10 },
   avatarItem: { width: '31%', aspectRatio: 1, borderRadius: 20, marginBottom: 12, overflow: 'hidden' },
   gridAvatarImage: { width: '100%', height: '100%' },
-  
   faqItem: { backgroundColor: c.background, padding: 18, borderRadius: 20, marginBottom: 12, borderWidth: 1, borderColor: c.surfaceBorder },
   faqIconContainer: { width: 32, height: 32, borderRadius: 10, backgroundColor: c.accentLight, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   faqQuestion: { fontSize: 15, fontWeight: '700', color: c.text, flex: 1 },
