@@ -100,7 +100,7 @@ export const ALL_EXERCISES: Exercise[] = [
     reps: '15 Repeticiones', 
     sets: '3 x 15', 
     icon: 'rocket-outline', 
-    gifSource: getGifUrl('0544'), 
+    gifSource: require('../assets/images/exercises/sentadillaconsalto.gif'), 
     muscleGroup: 'piernas',
     description: 'Aterriza de forma suave sobre las puntas de los pies para reducir el impacto en las articulaciones.'
   },
@@ -120,7 +120,7 @@ export const ALL_EXERCISES: Exercise[] = [
     reps: '20 Repeticiones', 
     sets: '3 x 20', 
     icon: 'fitness-outline', 
-    gifSource: getGifUrl('3214'), 
+    gifSource: require('../assets/images/exercises/pulsesquat.gif'), 
     muscleGroup: 'piernas',
     description: 'Realiza rebotes cortos en la parte más baja de la sentadilla para intensificar el bombeo muscular.'
   },
