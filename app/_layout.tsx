@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { LogBox, Platform } from 'react-native';
 
-// 🛡️ LIMPIEZA DE CONSOLA
 LogBox.ignoreLogs([
   '[Reanimated]',        
   'shadow*',             
@@ -29,7 +28,6 @@ export default function RootLayout() {
   }, []);
 
   return (
-    /* 🌟 CAMBIO CLAVE: UserProvider envuelve a ThemeProvider */
     <UserProvider>
       <ThemeProvider>
         <StatusBar style="auto" hidden={false} translucent={true} />
