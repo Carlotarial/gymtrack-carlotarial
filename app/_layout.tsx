@@ -4,7 +4,15 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { LogBox, Platform } from 'react-native';
+
+LogBox.ignoreLogs([
+  '[Reanimated]',        
+  'shadow*',             
+  'props.pointerEvents', 
+  '[expo-notifications]',
+  'Selected easing is not currently supported on web' 
+]);
 
 export default function RootLayout() {
   
