@@ -211,7 +211,7 @@ export default function HomeScreen() {
               {[
                 { title: '¡A beber agua!', desc: 'No olvides hidratarte para mantener el ritmo.', icon: 'water', col: '#4A90E2' },
                 { title: 'Nueva racha', desc: '¡Has completado 3 días seguidos! Sigue así.', icon: 'flame', col: '#FF4B4B' },
-                { title: 'Consejo Pro', desc: 'Recuerda estirar después de cada sesión.', icon: 'flash', col: '#FFB800' }
+                { title: 'Consejo', desc: 'Recuerda estirar después de cada sesión.', icon: 'flash', col: '#FFB800' }
               ].map((n, i) => (
                 <View key={i} style={s.notifItem}>
                   <View style={[s.notifIcon, { backgroundColor: n.col + '20' }]}>
