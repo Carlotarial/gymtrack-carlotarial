@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 export interface WorkoutSession {
   id: string;
@@ -21,6 +22,7 @@ export interface UserData {
   waterIntake: number;
   workoutHistory: WorkoutSession[];
   avatar?: string;
+  theme?: 'light' | 'dark' | 'system'; 
 }
 
 export type AppState =
@@ -56,6 +58,7 @@ const DEFAULT_USER: UserData = {
   waterIntake: 0,
   workoutHistory: [],
   avatar: '',
+  theme: 'system',
 };
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -104,13 +107,30 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateUser = async (newData: Partial<UserData>) => {
     if (appState.status !== 'ready') return;
+
+    if (newData.name) {
+      const newNameTrimmed = newData.name.trim();
+      
+      const nameExists = appState.allUsers.some(
+        p => p.name.toLowerCase() === newNameTrimmed.toLowerCase() && p.name !== appState.user.name
+      );
+
+      if (nameExists) {
+        Alert.alert("Nombre en uso", "Ya existe un perfil con ese nombre. Por favor, elige uno diferente. ✨");
+        return; 
+      }
+    }
+
     const updatedUser = { ...appState.user, ...newData };
+    
     let updatedProfiles = appState.allUsers.map(p => 
       p.name === appState.user.name ? updatedUser : p
     );
-    if (newData.name && !appState.allUsers.find(p => p.name === newData.name)) {
+
+    if (newData.name && !appState.allUsers.find(p => p.name === updatedUser.name)) {
         updatedProfiles = [...updatedProfiles, updatedUser];
     }
+
     setAppState({ status: 'ready', user: updatedUser, allUsers: updatedProfiles });
     await saveAll(updatedUser, updatedProfiles);
   };

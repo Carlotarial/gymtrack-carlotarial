@@ -13,9 +13,17 @@ const isWeb = Platform.OS === 'web';
 export default function NameScreen() {
   const router = useRouter();
   const { updateUser, allUsers, switchUser, isLoading } = useUser();
-  const { colors } = useTheme();
+  const { colors, setMode } = useTheme();
   const [name, setName] = useState('');
   const [showProfiles, setShowProfiles] = useState(false);
+
+  // 🛡️ LÓGICA DE VALIDACIÓN EN TIEMPO REAL
+  const trimmedName = name.trim();
+  const isNameTaken = allUsers.some(
+    (u) => u.name.toLowerCase() === trimmedName.toLowerCase()
+  );
+  const isNameTooShort = trimmedName.length < 2;
+  const canContinue = !isNameTaken && !isNameTooShort;
 
   if (isLoading) {
     return (
@@ -26,16 +34,25 @@ export default function NameScreen() {
   }
 
   const handleContinue = async () => {
-    if (name.trim().length < 2) return;
-    await updateUser({ name: name.trim() });
+    if (!canContinue) return;
+    
+    await updateUser({ name: trimmedName });
     router.push({
       pathname: '/onboarding/objective',
-      params: { userName: name.trim() }
+      params: { userName: trimmedName }
     } as any);
   };
 
   const handleSelectProfile = async (profileName: string) => {
+    const userToLoad = allUsers?.find(u => u.name === profileName);
     await switchUser(profileName);
+    
+    if (userToLoad?.theme) {
+      setMode(userToLoad.theme);
+    } else {
+      setMode('system');
+    }
+
     setShowProfiles(false);
     router.replace('/(tabs)' as any);
   };
@@ -100,8 +117,13 @@ export default function NameScreen() {
               </Animated.View>
 
               <Animated.View entering={FadeInUp.duration(800).delay(500)} style={staticStyles.inputContainer}>
-                <View style={s.inputWrapper}>
-                  <Ionicons name="person-outline" size={22} color={colors.accent} style={{ marginLeft: 20 }} />
+                <View style={[s.inputWrapper, isNameTaken && { borderColor: '#FF6B6B', borderWidth: 1.5 }]}>
+                  <Ionicons 
+                    name={isNameTaken ? "alert-circle" : "person-outline"} 
+                    size={22} 
+                    color={isNameTaken ? "#FF6B6B" : colors.accent} 
+                    style={{ marginLeft: 20 }} 
+                  />
                   <TextInput
                     style={s.input}
                     placeholder="Escribe tu nombre..."
@@ -114,6 +136,13 @@ export default function NameScreen() {
                   />
                 </View>
 
+                {/* Mensaje de error si el nombre está duplicado */}
+                {isNameTaken && (
+                  <Animated.Text entering={FadeInUp} style={s.errorText}>
+                    Ese nombre ya tiene un perfil activo.
+                  </Animated.Text>
+                )}
+
                 {hasProfiles && (
                   <Pressable style={s.loginButton} onPress={() => setShowProfiles(true)}>
                     <Text style={s.loginButtonText}>Ingresar con perfil existente</Text>
@@ -125,12 +154,18 @@ export default function NameScreen() {
 
             <Animated.View entering={FadeInUp.duration(800).delay(700)} style={staticStyles.footer}>
               <Pressable
-                style={[s.nextButton, name.trim().length === 0 && s.nextButtonDisabled]}
-                disabled={name.trim().length === 0}
+                style={[s.nextButton, !canContinue && s.nextButtonDisabled]}
+                disabled={!canContinue}
                 onPress={handleContinue}
               >
-                <Text style={s.nextButtonText}>Comenzar ahora</Text>
-                <Ionicons name="chevron-forward" size={20} color={colors.buttonPrimaryText} />
+                <Text style={s.nextButtonText}>
+                  {isNameTaken ? "Nombre no disponible" : "Comenzar ahora"}
+                </Text>
+                <Ionicons 
+                  name={isNameTaken ? "close-circle" : "chevron-forward"} 
+                  size={20} 
+                  color={colors.buttonPrimaryText} 
+                />
               </Pressable>
             </Animated.View>
           </View>
@@ -221,6 +256,8 @@ const dynamicStyles = (c: AppColors) => StyleSheet.create({
 
   inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: c.surface, borderRadius: 28, height: 84, shadowColor: c.accentDark, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.06, shadowRadius: 24, elevation: 3, borderWidth: 1, borderColor: c.surfaceBorder },
   input: { flex: 1, height: '100%', paddingHorizontal: 16, fontSize: 18, fontWeight: '700', color: c.text, outlineStyle: 'none' } as any,
+
+  errorText: { color: '#FF6B6B', fontSize: 13, fontWeight: '700', marginTop: 8, marginLeft: 12 },
 
   loginButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 24, paddingVertical: 12 },
   loginButtonText: { fontSize: 15, fontWeight: '700', color: c.accentDark, marginRight: 8, textDecorationLine: 'underline' },
