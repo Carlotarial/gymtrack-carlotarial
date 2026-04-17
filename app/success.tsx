@@ -2,7 +2,7 @@ import { AppColors, useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
-import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TransformsStyle, View } from 'react-native';
 import Animated, {
   Easing,
   FadeInDown,
@@ -56,7 +56,7 @@ const ConfettiPiece = ({ index }: { index: number }) => {
       { translateY: translateY.value },
       { rotate: `${rotate.value}deg` },
       { translateX: horizontalOffset.value }
-    ],
+    ] as TransformsStyle['transform'],
   }));
 
   return (
