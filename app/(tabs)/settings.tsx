@@ -1,6 +1,5 @@
 import { AppColors, useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { useNotifications } from '@/hooks/useNotifications';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
@@ -46,7 +45,7 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { user, updateUser, logout, deleteProfile } = useUser();
   const { colors, mode, setMode } = useTheme();
-  const { isEnabled: notificationsEnabled, toggleNotifications } = useNotifications();
+ // const { isEnabled: notificationsEnabled, toggleNotifications } = useNotifications();
 
   const [showStats, setShowStats] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -155,10 +154,12 @@ export default function SettingsScreen() {
               <Text style={s.settingText}>Notificaciones</Text>
             </View>
             <Switch 
-              value={notificationsEnabled} 
+              /*value={notificationsEnabled} 
               onValueChange={(val) => { toggleNotifications(val); }} 
               trackColor={{ false: colors.barInactive, true: colors.accent }} 
-              thumbColor="#FFF" 
+              thumbColor="#FFF" */
+              value={false} // Siempre apagado
+              onValueChange={() => alert('Notificaciones no disponibles en esta versión')}
             />
           </View>
 
